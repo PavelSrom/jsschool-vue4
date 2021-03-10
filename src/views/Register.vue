@@ -47,7 +47,7 @@
 <script>
 import { ref } from "vue"
 import { useRouter } from "vue-router"
-import { useRegister } from "../composables/useRegister"
+import { useRegister } from "../composables"
 
 export default {
   setup() {
