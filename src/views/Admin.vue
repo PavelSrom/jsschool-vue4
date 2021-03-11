@@ -11,7 +11,7 @@
     </div>
 
     <form
-      @submit.prevent="handleSubmit"
+      @submit="handleSubmit"
       v-if="addMode"
       class="grid grid-cols-12 gap-8 my-4"
     >
@@ -54,73 +54,49 @@
       </div>
     </div>
 
-    <div
+    <admin-row
       v-for="product in products"
       :key="product.id"
-      class="grid grid-cols-12 gap-8"
-    >
-      <div class="col-span-2">
-        <input v-model="product.name" />
-      </div>
-      <div class="col-span-2">
-        <input v-model="product.description" />
-      </div>
-      <div class="col-span-2">
-        <input v-model="product.price" type="number" />
-      </div>
-      <div class="col-span-2">
-        <input v-model="product.image" />
-      </div>
-      <div class="col-span-4 flex space-x-4">
-        <div>
-          <span
-            class="material-icons cursor-pointer text-gray-400 hover:text-gray-900"
-          >
-            edit
-          </span>
-        </div>
-        <div @click="remove(product.id)">
-          <span
-            class="material-icons cursor-pointer text-gray-400 hover:text-gray-900"
-          >
-            delete
-          </span>
-        </div>
-      </div>
-    </div>
+      :product="product"
+      @onEdit="update(product.id, product)"
+      @onRemove="remove(product.id)"
+    />
   </div>
 </template>
 
 <script>
   import { ref } from "vue";
+  import AdminRow from "../components/AdminRow";
   import { getProducts, useProduct } from "../composables";
 
-  const initialValues = {
-    name: "",
-    description: "",
-    price: 5,
-    image: ""
-  };
-
   export default {
+    components: {
+      AdminRow
+    },
     setup() {
+      const initialValues = {
+        name: "",
+        description: "",
+        price: 5,
+        image: ""
+      };
+
       const addMode = ref(false);
       const newProduct = ref(initialValues);
 
       const { products } = getProducts();
-      const { add, remove } = useProduct();
+      const { add, update, remove } = useProduct();
 
-      const handleSubmit = () => {
+      const handleSubmit = e => {
+        e.preventDefault();
+
         add(newProduct.value).finally(() => {
           addMode.value = false;
-          newProduct.value = initialValues;
+          newProduct.value = initialValues; // doesn't work??
         });
       };
 
-      // eslint-disable-next-line
-      // const onEdit = id => {};
-
-      return { products, addMode, newProduct, handleSubmit, remove };
+      return { products, addMode, newProduct, handleSubmit, update, remove };
     }
   };
 </script>

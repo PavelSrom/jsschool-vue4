@@ -25,10 +25,6 @@
       const { products } = getProducts();
       const { push: navigate } = useRouter();
 
-      watch(products, () => {
-        console.log(products.value);
-      });
-
       watch(user, () => {
         if (!user.value) navigate({ name: "Login" });
       });

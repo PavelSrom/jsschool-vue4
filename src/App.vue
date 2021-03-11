@@ -6,24 +6,30 @@
 </template>
 
 <script>
-import { watch, ref } from "vue"
-import StatsHeader from "./components/Header"
-import { getUser } from "./composables"
+  import { watch, ref } from "vue";
+  import StatsHeader from "./components/Header";
+  import { getUser } from "./composables";
 
-export default {
-  components: {
-    StatsHeader,
-  },
+  export default {
+    components: {
+      StatsHeader
+    },
 
-  setup() {
-    const shouldRenderRouter = ref(false)
-    const { user } = getUser()
+    setup() {
+      const shouldRenderRouter = ref(false);
+      const { user } = getUser();
 
-    watch(user, () => {
-      shouldRenderRouter.value = true
-    })
+      watch(user, () => {
+        shouldRenderRouter.value = true;
+      });
 
-    return { shouldRenderRouter, user }
-  },
-}
+      return { shouldRenderRouter, user };
+    }
+  };
 </script>
+
+<style>
+  body {
+    background: #f4f4f4;
+  }
+</style>
