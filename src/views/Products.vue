@@ -11,9 +11,7 @@
 </template>
 
 <script>
-  import { watch } from "vue";
-  import { useRouter } from "vue-router";
-  import { getProducts, getUser } from "../composables";
+  import { getProducts } from "../composables";
   import ProductCard from "../components/ProductCard";
 
   export default {
@@ -21,13 +19,7 @@
       ProductCard
     },
     setup() {
-      const { user } = getUser();
       const { products } = getProducts();
-      const { push: navigate } = useRouter();
-
-      watch(user, () => {
-        if (!user.value) navigate({ name: "Login" });
-      });
 
       return { products };
     }

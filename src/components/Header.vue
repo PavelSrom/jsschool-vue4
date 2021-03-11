@@ -15,7 +15,7 @@
         Manage products
       </button>
       <button
-        @click="logout()"
+        @click="handleLogout"
         class="flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-gray-500 hover:bg-gray-700 md:py-4 md:text-lg md:px-10"
       >
         Sign out
@@ -34,7 +34,11 @@
       const { logout } = useLogout();
       const { push: navigate } = useRouter();
 
-      return { user, logout, navigate };
+      const handleLogout = () => {
+        logout().then(() => navigate({ name: "Login" }));
+      };
+
+      return { user, handleLogout, navigate };
     }
   };
 </script>
