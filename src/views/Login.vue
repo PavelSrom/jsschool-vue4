@@ -31,38 +31,43 @@
     >
       Sign in
     </button>
-    <a class="underline" @click="navigate({ name: 'Register' })"
+    <a class="underline cursor-pointer" @click="navigate({ name: 'Register' })"
       >No account? Sign up</a
     >
   </form>
 </template>
 
 <script>
-import { ref, watchEffect } from "vue"
-import { useRouter } from "vue-router"
-import { getUser, useLogin } from "../composables"
+  import { ref, watchEffect } from "vue";
+  import { useRouter } from "vue-router";
+  import { getUser, useLogin } from "../composables";
 
-export default {
-  setup() {
-    const email = ref("")
-    const password = ref("")
+  export default {
+    setup() {
+      const email = ref("");
+      const password = ref("");
 
-    const { user } = getUser()
-    const { error, login } = useLogin()
-    const { push: navigate } = useRouter()
+      const { user } = getUser();
+      const { error, login } = useLogin();
+      const { push: navigate } = useRouter();
 
-    const handleSubmit = async () => {
-      await login(email.value, password.value)
-      if (!error.value) {
-        navigate({ name: "Products" })
-      }
+      const handleSubmit = async () => {
+        await login(email.value, password.value);
+        if (!error.value) {
+          navigate({ name: "Products" });
+        }
+      };
+
+      /**
+       * watch = whenever a specific piece of state changes, doesn't run on mount, only on updates
+       * watchEffect = whenever anything thats inside it changes, runs both on mount and on updates
+       * https://markus.oberlehner.net/blog/watch-vs-watcheffect-when-to-use-what-with-vue/
+       */
+      watchEffect(() => {
+        if (user.value) navigate({ name: "Products" });
+      });
+
+      return { email, password, error, handleSubmit, navigate };
     }
-
-    watchEffect(() => {
-      if (user) navigate({ name: "Products" })
-    })
-
-    return { email, password, error, handleSubmit, navigate }
-  },
-}
+  };
 </script>

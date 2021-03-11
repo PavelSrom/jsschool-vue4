@@ -38,45 +38,37 @@
     >
       Sign up
     </button>
-    <a class="underline" @click="navigate({ name: 'Login' })"
+    <a
+      class="underline cursor-pointer"
+      @click="() => navigate({ name: 'Login' })"
       >Already registered? Sign in</a
     >
   </form>
 </template>
 
 <script>
-import { ref, watchEffect } from "vue"
-import { useRouter } from "vue-router"
-import { useRegister, getUser } from "../composables"
+  import { ref } from "vue";
+  import { useRouter } from "vue-router";
+  import { useRegister } from "../composables";
 
-export default {
-  setup() {
-    const { error, register } = useRegister()
-    const { push: navigate } = useRouter()
-    const { user } = getUser()
+  export default {
+    setup() {
+      const { error, register } = useRegister();
+      const { push: navigate } = useRouter();
 
-    const name = ref("")
-    const email = ref("")
-    const password = ref("")
+      const name = ref("");
+      const email = ref("");
+      const password = ref("");
 
-    const handleSubmit = async () => {
-      await register(email.value, password.value, name.value)
+      const handleSubmit = async () => {
+        await register(email.value, password.value, name.value);
 
-      if (!error.value) {
-        navigate({ name: "Login" })
-      }
+        if (!error.value) {
+          navigate({ name: "Login" });
+        }
+      };
+
+      return { name, email, password, error, handleSubmit, navigate };
     }
-
-    /**
-     * watch = whenever a specific piece of state changes, doesn't run on mount, only on updates
-     * watchEffect = whenever anything thats inside it changes, runs both on mount and on updates
-     */
-
-    watchEffect(() => {
-      if (user) navigate({ name: "Products" })
-    })
-
-    return { name, email, password, error, handleSubmit, navigate }
-  },
-}
+  };
 </script>
