@@ -1,10 +1,8 @@
 <template>
-  <div
-    class="p-4 bg-green-500 text-white shadow-lg flex justify-between items-center"
-  >
-    <div>
-      <p class="text-xl font-semibold">Hello {{ user.displayName }}</p>
-      <p>Logged in as {{ user.email }}</p>
+  <div class="header">
+    <div class="info">
+      <p class="info__text--name">Hello {{ user.displayName }}</p>
+      <p class="info__text--email">Logged in as {{ user.email }}</p>
     </div>
     <div class="space-x-4 flex">
       <button
@@ -42,3 +40,34 @@
     }
   };
 </script>
+
+<style lang="scss" scoped>
+  .header {
+    padding: 16px;
+    background: deepskyblue;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .info {
+      display: block;
+      &__text {
+        font-size: 16px;
+        font-weight: 600;
+        &--name {
+          display: inline;
+          font-weight: bold;
+          font-size: 20px;
+          &:hover {
+            color: green;
+          }
+        }
+        &--email {
+          font-weight: 300;
+          color: #f4f4f4;
+        }
+      }
+    }
+  }
+</style>
