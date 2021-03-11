@@ -38,15 +38,16 @@
 </template>
 
 <script>
-import { ref } from "vue"
+import { ref, watchEffect } from "vue"
 import { useRouter } from "vue-router"
-import { useLogin } from "../composables"
+import { getUser, useLogin } from "../composables"
 
 export default {
   setup() {
     const email = ref("")
     const password = ref("")
 
+    const { user } = getUser()
     const { error, login } = useLogin()
     const { push: navigate } = useRouter()
 
@@ -56,6 +57,11 @@ export default {
         navigate({ name: "Products" })
       }
     }
+
+    watchEffect(() => {
+      if (user) navigate({ name: "Products" })
+    })
+
     return { email, password, error, handleSubmit, navigate }
   },
 }

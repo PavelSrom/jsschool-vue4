@@ -1,7 +1,7 @@
 import { ref } from "vue"
 import { auth } from "../firebase-config"
 
-const user = ref(auth.currentUser)
+const user = ref(undefined)
 
 auth.onAuthStateChanged((currUser) => {
   // console.log(currUser)

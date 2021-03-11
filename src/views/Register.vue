@@ -45,14 +45,15 @@
 </template>
 
 <script>
-import { ref } from "vue"
+import { ref, watchEffect } from "vue"
 import { useRouter } from "vue-router"
-import { useRegister } from "../composables"
+import { useRegister, getUser } from "../composables"
 
 export default {
   setup() {
     const { error, register } = useRegister()
     const { push: navigate } = useRouter()
+    const { user } = getUser()
 
     const name = ref("")
     const email = ref("")
@@ -60,11 +61,20 @@ export default {
 
     const handleSubmit = async () => {
       await register(email.value, password.value, name.value)
+
       if (!error.value) {
         navigate({ name: "Login" })
-        // navigate to login or sign in directly
       }
     }
+
+    /**
+     * watch = whenever a specific piece of state changes, doesn't run on mount, only on updates
+     * watchEffect = whenever anything thats inside it changes, runs both on mount and on updates
+     */
+
+    watchEffect(() => {
+      if (user) navigate({ name: "Products" })
+    })
 
     return { name, email, password, error, handleSubmit, navigate }
   },

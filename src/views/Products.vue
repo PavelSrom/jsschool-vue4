@@ -12,9 +12,8 @@ import { getProducts, getUser } from "../composables"
 export default {
   setup() {
     const { user } = getUser()
-    const { push: navigate } = useRouter()
-
     const { products } = getProducts()
+    const { push: navigate } = useRouter()
 
     watch(products, () => {
       console.log(products.value)
