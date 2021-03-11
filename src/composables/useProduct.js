@@ -1,48 +1,49 @@
-import { ref } from "vue"
-import { firestore } from "../firebase-config"
+import { ref } from "vue";
+import { firestore } from "../firebase-config";
 
-/**
- * @param {'message' | string} collection
- * @param {object} item
- */
-export const useProduct = (id) => {
-  const status = ref("idle")
-  const productRef = firestore.collection("products").doc(id)
+export const useProduct = () => {
+  const status = ref("idle");
 
-  const add = async (item) => {
-    status.value = "loading"
+  const add = async item => {
+    status.value = "loading";
 
     try {
-      await firestore.collection("products").add(item)
-      status.value = "success"
+      await firestore.collection("products").add(item);
+      status.value = "success";
     } catch (err) {
-      console.log(err)
-      status.value = "error"
+      console.log(err);
+      status.value = "error";
     }
-  }
+  };
 
-  const update = async (newValues) => {
-    status.value = "loading"
+  const update = async (id, newValues) => {
+    status.value = "loading";
 
     try {
-      await productRef.update(newValues)
-      status.value = "success"
+      await firestore
+        .collection("products")
+        .doc(id)
+        .update(newValues);
+      status.value = "success";
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }
+  };
 
-  const remove = async () => {
-    status.value = "loading"
+  const remove = async id => {
+    status.value = "loading";
 
     try {
-      await productRef.delete()
-      status.value = "success"
+      await firestore
+        .collection("products")
+        .doc(id)
+        .delete();
+      status.value = "success";
     } catch (err) {
-      console.log(err)
-      status.value = "error"
+      console.log(err);
+      status.value = "error";
     }
-  }
+  };
 
-  return { status, add, update, remove }
-}
+  return { status, add, update, remove };
+};
